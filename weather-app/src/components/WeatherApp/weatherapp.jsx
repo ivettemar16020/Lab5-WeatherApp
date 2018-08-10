@@ -10,7 +10,8 @@ class WeatherApp extends React.Component {
         this.state = {
             city: '',
             icon: '',
-            temp: '',
+            temp_f: '',
+            temp_c: '',
             date: '',
         }
     }
@@ -22,7 +23,8 @@ class WeatherApp extends React.Component {
                 const data = responseJSON.list[0];
                 this.setState({
                     icon: data.weather[0].main, //Get the value and set as state
-                    temp: data.main.temp, //Get the value and set as state
+                    temp_f: data.main.temp, //Get the value and set as state
+                    temp_c: data.main.temp - 273.15,
                 })
             });
     }
@@ -42,14 +44,13 @@ class WeatherApp extends React.Component {
     }
 
     render (){
-        const {city, temp} = this.state
+        const {city, temp_c} = this.state
         console.log(this.state)
         return (
             <Fragment>
-                <h1 className="App">Weather App</h1>
                 <Information city={city}/>
-                <h3>{Number(temp).toFixed(2)} </h3>
-                <currentWeather weather={temp}/>
+                <h3>{Number(temp_c).toFixed(2)} </h3>
+                <currentWeather weather={temp_c}/>
             </Fragment>
         );
     }
