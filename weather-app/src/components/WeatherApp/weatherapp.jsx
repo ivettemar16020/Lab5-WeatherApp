@@ -2,13 +2,14 @@ import React, {Fragment} from 'react';
 import './weatherapp.css';
 
 import Information from '../cInformation/information';
-import currentWeather from '../cWeather/currentWeather';
+import CurrentWeather from '../cWeather/currentWeather';
 
 class WeatherApp extends React.Component {
     constructor (props){
         super(props);
         this.state = {
             city: '',
+            weather: '',
             icon: '',
             temp_f: '',
             temp_c: '',
@@ -22,11 +23,25 @@ class WeatherApp extends React.Component {
             .then( responseJSON => {
                 const data = responseJSON.list[0];
                 this.setState({
-                    icon: data.weather[0].main, //Get the value and set as state
+                    weather: data.weather[0].main, //Get the value and set as state
                     temp_f: data.main.temp, //Get the value and set as state
                     temp_c: data.main.temp - 273.15,
                 })
             });
+    }
+
+    _GetIcon = () => {
+        if (this.state.weather === 'Rain'){
+            this.setState({
+                icon: "http://icon-park.com/imagefiles/simple_weather_icons2_rain.png",
+            })
+            
+            if (this.state.weather === 'Sunny'){
+                this.setState({
+                    icon: "http://icon-park.com/imagefiles/simple_weather_icons_sunny.png",
+                })
+            }
+        }
     }
 
     componentWillMount() {
@@ -38,19 +53,21 @@ class WeatherApp extends React.Component {
                         city: search.city,
                     });
 
-                    this._City(search.city);//Search the weather of the city
+                    this._City(this.state.city);//Search the weather of the city
                 }
             )
     }
 
     render (){
-        const {city, temp_c} = this.state
-        console.log(this.state)
+        const {city, temp_c, icon} = this.state
+        console.log(this.state);
+        console.log(icon);
         return (
             <Fragment>
                 <Information city={city}/>
-                <h3>{Number(temp_c).toFixed(2)} </h3>
-                <currentWeather weather={temp_c}/>
+                <img src={icon}/>
+                <CurrentWeather weather={Number(temp_c).toFixed(2)}/>
+                <button onClick={this._GetIcon.bind(this)}>¡GO!</button>
             </Fragment>
         );
     }

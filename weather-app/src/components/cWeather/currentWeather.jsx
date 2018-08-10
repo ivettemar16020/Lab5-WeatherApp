@@ -5,7 +5,7 @@ const Weather = ({
     weather = ''
 }) => {
     return (
-        <h3 className="weather"> {weather} </h3>
+        <h3 className="weather"> {weather} °C </h3>
     );
 }
 
