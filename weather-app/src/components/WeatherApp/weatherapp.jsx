@@ -8,14 +8,12 @@ class WeatherApp extends React.Component {
     constructor (props){
         super(props);
         this.state = {
-            inputValue: 'Guatemala City',
-            dateValue: '',
             city: '',
             weather: '',
             icon: '',
             temp_f: '',
             temp_c: '',
-            date: '',
+            dateValue: '',
         }
     }
 
@@ -24,7 +22,6 @@ class WeatherApp extends React.Component {
             .then( weather => weather.json())
             .then( responseJSON => {
                 const data = responseJSON.list[0];
-                console.log(data);
                 this.setState({
                     weather: data.weather[0].main, //Get the value and set as state
                     temp_f: data.main.temp, //Get the value and set as state
@@ -73,7 +70,7 @@ class WeatherApp extends React.Component {
     }
 
     render (){
-        const {city, temp_c, icon, weather, inputValue, dateValue} = this.state
+        const {city, temp_c, icon, weather, dateValue} = this.state
         const link = `http://openweathermap.org/img/w/${icon}.png`
         console.log(this.state);
         console.log(icon);
