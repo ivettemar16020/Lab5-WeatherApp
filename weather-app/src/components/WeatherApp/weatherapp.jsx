@@ -7,16 +7,18 @@ import CurrentWeather from '../cWeather/currentWeather';
 class WeatherApp extends React.Component {
     constructor (props){
         super(props);
+        //States
         this.state = {
-            city: '',
-            weather: '',
-            icon: '',
-            temp_f: '',
-            temp_c: '',
-            dateValue: '',
+            city: '', 
+            weather: '', 
+            icon: '', //Save the icon key 
+            temp_f: '', //Temperature °Fahrenheit 
+            temp_c: '', //Temperature Celsius 
+            dateValue: '', 
         }
     }
 
+    //Function, returns the new states depending on the city
     _CityWeather = (city) => {
         fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=e5c3dd7a3f8e4e834f3607fddeefe3f2`)
             .then( weather => weather.json())
@@ -31,6 +33,7 @@ class WeatherApp extends React.Component {
             });
     }
 
+    //Function, returns the icon value
     _GetNewIcon = () => {
         if (this.state.weather === 'Rain'){
             this.setState({
@@ -51,10 +54,12 @@ class WeatherApp extends React.Component {
         }
     }
 
+    //When clicked, this happens
     _GetNewWeather = () => {
         this._CityWeather(this.state.city);
     }
 
+    //Component Lyfecycle
     componentWillMount() {
         fetch('https://ipinfo.io/json')
             .then( response => response.json())
@@ -71,9 +76,8 @@ class WeatherApp extends React.Component {
 
     render (){
         const {city, temp_c, icon, weather, dateValue} = this.state
+        //The new link, depending on the weather
         const link = `http://openweathermap.org/img/w/${icon}.png`
-        console.log(this.state);
-        console.log(icon);
         return (
             <Fragment>
                 <Information city={city}/>

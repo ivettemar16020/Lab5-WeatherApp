@@ -1,6 +1,7 @@
 import React from 'react';
 import './currentweather.css'; 
 
+//Returns the current weather, with the conditions that the user requires
 const Weather = ({
     weather = ''
 }) => {
