@@ -19,7 +19,7 @@ class WeatherApp extends React.Component {
         }
     }
 
-    _City = (city) => {
+    _CityWeather = (city) => {
         fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=e5c3dd7a3f8e4e834f3607fddeefe3f2`)
             .then( weather => weather.json())
             .then( responseJSON => {
@@ -32,14 +32,16 @@ class WeatherApp extends React.Component {
             });
     }
 
-    _GetIcon = () => {
+    _GetNewWeather = () => {
+        this._CityWeather(this.state.city);
+        
         if (this.state.weather === 'Rain'){
             this.setState({
                 icon: "http://icon-park.com/imagefiles/simple_weather_icons2_rain.png",
             })
         }
             
-        if (this.state.weather === 'Sunny'){
+        if (this.state.weather === 'Sunny' || this.state.weather === 'Clear' ){
             this.setState({
                 icon: "http://icon-park.com/imagefiles/simple_weather_icons_sunny.png",
             })
@@ -50,6 +52,7 @@ class WeatherApp extends React.Component {
                 icon: "https://cdn1.iconfinder.com/data/icons/weather-icons-6/512/clouds-512.png",
             })
         }
+        console.log(this.state.city);
     }
 
     componentWillMount() {
@@ -61,7 +64,7 @@ class WeatherApp extends React.Component {
                         city: search.city,
                     });
 
-                    this._City(this.state.city);//Search the weather of the city
+                    this._CityWeather(this.state.city);//Search the weather of the city
                 }
             )
     }
@@ -79,10 +82,10 @@ class WeatherApp extends React.Component {
                 <div class="container">
                     <input 
                       type="text"
-                      value={inputValue}
+                      value={city}
                       onChange={
                         e => this.setState({
-                          inputValue: e.target.value, 
+                          city: e.target.value, 
                         })
                       }
                     />
@@ -97,7 +100,7 @@ class WeatherApp extends React.Component {
                       }
                     />
                     <img class="calendar-icon" src="https://lh3.ggpht.com/oGR9I1X9No3SfFEXrq655tETtVVzI3jIphhmEVPGPEVuM5gfwh8lOGWHQFf6gjSTvw=w300" alt='' />
-                    <button onClick={this._GetIcon.bind(this)}>¡GO!</button>
+                    <button onClick={this._GetNewWeather.bind(this)}>¡GO!</button>
                 </div>
             </Fragment>
         );
