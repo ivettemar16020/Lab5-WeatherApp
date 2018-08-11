@@ -24,17 +24,17 @@ class WeatherApp extends React.Component {
             .then( weather => weather.json())
             .then( responseJSON => {
                 const data = responseJSON.list[0];
+                console.log(data);
                 this.setState({
                     weather: data.weather[0].main, //Get the value and set as state
                     temp_f: data.main.temp, //Get the value and set as state
                     temp_c: data.main.temp - 273.15,
+                    icon: data.weather[0].icon,
                 })
             });
     }
 
-    _GetNewWeather = () => {
-        this._CityWeather(this.state.city);
-        
+    _GetNewIcon = () => {
         if (this.state.weather === 'Rain'){
             this.setState({
                 icon: "http://icon-park.com/imagefiles/simple_weather_icons2_rain.png",
@@ -52,7 +52,10 @@ class WeatherApp extends React.Component {
                 icon: "https://cdn1.iconfinder.com/data/icons/weather-icons-6/512/clouds-512.png",
             })
         }
-        console.log(this.state.city);
+    }
+
+    _GetNewWeather = () => {
+        this._CityWeather(this.state.city);
     }
 
     componentWillMount() {
@@ -71,15 +74,16 @@ class WeatherApp extends React.Component {
 
     render (){
         const {city, temp_c, icon, weather, inputValue, dateValue} = this.state
+        const link = `http://openweathermap.org/img/w/${icon}.png`
         console.log(this.state);
         console.log(icon);
         return (
             <Fragment>
                 <Information city={city}/>
-                <img src={icon} alt=''/>
+                <img src={link} alt=''/>
                 <h4>{weather}</h4>
                 <CurrentWeather weather={Number(temp_c).toFixed(2)}/>
-                <div class="container">
+                <div className="container">
                     <input 
                       type="text"
                       value={city}
@@ -90,7 +94,7 @@ class WeatherApp extends React.Component {
                       }
                     />
                     <input
-                      class="inputfield" 
+                      className="inputfield" 
                       type="date"
                       value={dateValue}
                       onChange={
@@ -99,7 +103,7 @@ class WeatherApp extends React.Component {
                         })
                       }
                     />
-                    <img class="calendar-icon" src="https://lh3.ggpht.com/oGR9I1X9No3SfFEXrq655tETtVVzI3jIphhmEVPGPEVuM5gfwh8lOGWHQFf6gjSTvw=w300" alt='' />
+                    <img className="calendar-icon" src="https://lh3.ggpht.com/oGR9I1X9No3SfFEXrq655tETtVVzI3jIphhmEVPGPEVuM5gfwh8lOGWHQFf6gjSTvw=w300" alt='' />
                     <button onClick={this._GetNewWeather.bind(this)}>¡GO!</button>
                 </div>
             </Fragment>
